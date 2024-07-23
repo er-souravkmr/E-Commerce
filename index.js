@@ -3,7 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config()
 
-const userRouter = require('./routes/user.route.js');
+const userRouter = require('./src/routes/user.route.js');
 
 const mongoose = require('mongoose');
 mongoose.connect(`${process.env.DB_CONN}`)
@@ -16,7 +16,7 @@ mongoose.connect(`${process.env.DB_CONN}`)
 })
 
 
-
+app.use(express.json());
 app.use("/api/user", userRouter);
 app.listen(process.env.PORT ,(err)=>{
     if(err) console.log(err);
