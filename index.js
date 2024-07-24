@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config()
 
 const userRouter = require('./src/routes/user.route.js');
+const authRouter = require('./src/routes/auth.js');
 
 const mongoose = require('mongoose');
 mongoose.connect(`${process.env.DB_CONN}`)
@@ -18,6 +19,8 @@ mongoose.connect(`${process.env.DB_CONN}`)
 
 app.use(express.json());
 app.use("/api/user", userRouter);
+app.use("/api/auth", authRouter);
+
 app.listen(process.env.PORT ,(err)=>{
     if(err) console.log(err);
     console.log(`Backend Server is connected at ${process.env.PORT}`);
