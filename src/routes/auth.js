@@ -25,19 +25,19 @@ router.post('/register',async (req,res)=>{
 router.post('/login',async (req,res)=>{
     const {username , password} = req.body;
     console.log(password)
-    !username && res.status(400).json("Username is Req");
+    if(!username) return res.status(400).json("Username is Req");
 
    try {
      const user = await User.findOne({username : username});
-     !user && res.status(400).json("Wrong Credentails");
+     if(!user) return res.status(400).json("Wrong Credentails");
      console.log(user);
      
-     const pass = user.isPasswordCorrect(password); // Taking Time To Resolve
-     !pass && res.status(400).json("Wrong password");
+     const pass = await user.isPasswordCorrect(password); // Taking Time To Resolve
+     if(!pass) return res.status(400).json("Wrong password");
      console.log(pass);
 
 
-
+     res.status(200).json({msg:"Pasword Matched"})
    } catch (error) {
         res.status(500).json(error)
    }
