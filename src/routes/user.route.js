@@ -1,7 +1,8 @@
 const router = require('express').Router();
+const {verifyToken} = require('../middleware/verifyToken.middleware.js')
 
-router.get('/test',(req,res)=>{
-   res.send('Testing')
+router.route('/test').get(verifyToken ,(req,res)=>{
+   res.status(200).json("Working Fine")
 })
 
 

@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const User = require('../models/user.model.js')
-
+const User = require('../models/user.model.js');
+const jwt = require('jsonwebtoken');
 //Register
 router.post('/register',async (req,res)=>{
    const {username,password,email,isAdmin} = req.body;
@@ -23,23 +23,34 @@ router.post('/register',async (req,res)=>{
 //Login 
 
 router.post('/login',async (req,res)=>{
-    const {username , password} = req.body;
-    console.log(password)
+    const {username} = req.body;
+    
     if(!username) return res.status(400).json("Username is Req");
 
    try {
      const user = await User.findOne({username : username});
      if(!user) return res.status(400).json("Wrong Credentails");
-     console.log(user);
-     
-     const pass = await user.isPasswordCorrect(password); // Taking Time To Resolve
+
+     const pass = await user.isPasswordCorrect(req.body.password); // Taking Time To Resolve
      if(!pass) return res.status(400).json("Wrong password");
-     console.log(pass);
 
+     const {password , ...others} = user._doc;
 
-     res.status(200).json({msg:"Pasword Matched"})
+     const accessToken = jwt.sign(
+      {
+        id:others?._id,
+        isAdmin:others?.isAdmin
+      },
+      process.env.SECRET_KEY,
+      {expiresIn:process.env.EXPIRY}
+    );
+    
+
+     res.status(200).json({msg:"Pasword Matched", data: others ,accessToken:accessToken});
+
    } catch (error) {
-        res.status(500).json(error)
+      console.log(error)
+      res.status(500).json(error)
    }
 })
 
