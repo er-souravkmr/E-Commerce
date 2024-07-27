@@ -17,7 +17,7 @@ mongoose.connect(`${process.env.DB_CONN}`)
 })
 
 
-app.use(express.json());
+app.use(express.json());    
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 
