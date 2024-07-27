@@ -31,7 +31,7 @@ router.post('/login',async (req,res)=>{
      const user = await User.findOne({username : username});
      if(!user) return res.status(400).json("Wrong Credentails");
 
-     const pass = await user.isPasswordCorrect(req.body.password); // Taking Time To Resolve
+     const pass = await user.isPasswordCorrect(req.body.password); 
      if(!pass) return res.status(400).json("Wrong password");
 
      const {password , ...others} = user._doc;
