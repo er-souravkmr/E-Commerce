@@ -22,10 +22,12 @@ app.use(express.urlencoded({extended:true,limit : "16kb"}))
 const userRouter = require('./src/routes/user.route.js');
 const authRouter = require('./src/routes/auth.js');
 const productRouter = require('./src/routes/product.route.js');
+const cartRouter = require('./src/routes/cart.route.js');
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
 
 app.listen(process.env.PORT ,(err)=>{
     if(err) console.log(err);
