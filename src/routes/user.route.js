@@ -21,7 +21,7 @@ router.route('/updateUser').patch(verifyToken , async(req,res)=>{
     return  res.status(200).json({msg:"Account Details Updated",data:user});
   } catch (error) {
     console.log(error);
-    if(!user) return  res.status(500).json("Can't Update User Please Try Again Later");
+    return  res.status(500).json("Can't Update User Please Try Again Later");
   }
 })
 

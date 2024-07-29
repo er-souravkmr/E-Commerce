@@ -16,6 +16,7 @@ router.route('/create').post(verifyTokenAndAdmin, upload.single("image"),async (
         }
     
         const imageLocalPath = req.file?.path;
+        if(!imageLocalPath) return res.status(400).json(" Upload image !! ");
 
         const image = await uploadOnCloudinary(imageLocalPath);
         if(!image) return res.status(500).json("Can't Upload image !! Please Try Again Later ");
@@ -85,5 +86,49 @@ router.route('/update/:productId').patch(verifyTokenAndAdmin, upload.single("ima
  }
 
 })
+
+//Get Product By Id
+router.route("/get/:id").get(verifyToken, async (req,res)=>{
+   const {id} = req.params;
+   try {
+    if(!isValidObjectId(id)) return res.status(402).json("Invalid Id");
+ 
+    const product = await Product.findById(id);
+    if(!product) return res.status(500).json("Product not Found");
+ 
+    return res.status(200).json({msg:"Product Found",data:product} );
+   } catch (error) {
+      console.log(error)
+      return res.status(502).json("try Again");
+   }
+})
+
+//getProductByQueries
+
+router.route('/').get(verifyToken, async(req,res)=>{
+  const {category, newProduct} = req.query;
+  try {
+      
+      let products="";
+      if(category){
+        products = await Product.find({categories:{$in:[category]}})
+
+      }else if(newProduct){
+        products = await Product.find().sort({createdAt : -1}).limit(10)
+      }else{
+        products = await Product.find()
+      }
+      console.log(products)
+      if(!products) return res.status(500).json("No Product Found")
+      
+      return res.status(200).json({msg:"Fetched Successfully",data:products})
+    
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({msg:"Data Not Found",error:error})
+  }
+   
+})
+
 
 module.exports = router;
