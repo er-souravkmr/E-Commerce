@@ -6,14 +6,13 @@ const {
   verifyTokenAndAdmin,
 } = require("../middleware/auth.middleware.js");
 const Cart = require("../models/cart.model.js");
-const Product = require("../models/product.model.js");
 const upload = require("../middleware/multer.midddleware.js");
 
 //Create Cart
 
 router
   .route("/create")
-  .post(verifyToken, upload.single("image"), async (req, res) => {
+  .post(verifyToken, async (req, res) => {
     const { products } = req.body;
 
     try {

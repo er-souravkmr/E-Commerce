@@ -23,11 +23,13 @@ const userRouter = require('./src/routes/user.route.js');
 const authRouter = require('./src/routes/auth.js');
 const productRouter = require('./src/routes/product.route.js');
 const cartRouter = require('./src/routes/cart.route.js');
+const orderRouter = require('./src/routes/order.route.js');
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
 app.listen(process.env.PORT ,(err)=>{
     if(err) console.log(err);

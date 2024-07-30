@@ -22,7 +22,7 @@ const verifyToken = (req,res,next)=>{
 
 const verifyTokenAndAdmin = (req,res,next)=>{
     verifyToken(req,res,()=>{
-        if (req.user.id === req.user.isAdmin) {
+        if (req.user.isAdmin) {
             next();
         } else {
             return res.status(403).json("You can not do that ! As you are not admin");
@@ -31,4 +31,14 @@ const verifyTokenAndAdmin = (req,res,next)=>{
   
 }
 
-module.exports = {verifyToken,verifyTokenAndAdmin};
+const verifyTokenBoth = (req,res,next)=>{
+    verifyToken(req,res,()=>{
+        if (req.user.id == req.params.userId || req.user.isAdmin) {
+            next();
+        } else {
+            return res.status(403).json("You can not do that ! As you are not admin");
+        }
+    })  
+}
+
+module.exports = {verifyToken,verifyTokenAndAdmin,verifyTokenBoth };
